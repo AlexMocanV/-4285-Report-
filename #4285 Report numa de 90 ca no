@@ -1,0 +1,59 @@
+#include <fstream>
+#include <stack>
+#include <algorithm>
+std::string nume="report";
+std::ifstream fin(nume+".in");
+std::ofstream fout(nume+".out");
+int v[200002];
+std::stack<std::pair<short int,int>>stiv;
+std::stack<std::pair<short int,int>>stiv1;
+int main()
+{
+    int n,m;
+    fin>>n>>m;
+    for(int i=0;i<n;i++)
+    {
+        fin>>v[i];
+    }
+    for(int i=0;i<m;i++)
+    {
+        short int op;
+        int dr;
+        fin>>op>>dr;
+        while(!stiv.empty()&&dr>stiv.top().second)
+        {
+            stiv.pop();
+        }
+        std::pair<short int,int>b;
+        b.first=op;
+        b.second=dr;
+        stiv.push(b);
+    }
+    while(!stiv.empty())
+    {
+        stiv1.push(stiv.top());
+        stiv.pop();
+    }
+    while(!stiv1.empty())
+    {
+        if(stiv1.top().first==1){
+            std::sort(v+0,v+stiv1.top().second);
+        }
+        else 
+        {
+            std::sort(v+0,v+stiv1.top().second,std::greater<int>());
+        }
+        stiv1.pop();
+    }
+    for(int i=0;i<n;i++)
+    {
+        fout<<v[i]<<' ';
+    }
+    return 0;
+}
+/*
+d  next smaller element
+s  previous smaller element
+8
+1 3 6 5 2 1 9 6
+*/
